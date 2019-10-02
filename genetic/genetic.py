@@ -4,6 +4,7 @@
 @project 
 @name genetic
 """
+import datetime
 import random
 import statistics
 import sys
@@ -21,7 +22,7 @@ def _generate_parent(size, genSet, fitness):
     while len(genes) < size:
         sizeMuestral = min(size - len(genes), len(genSet))
         genes.extend(random.sample(genSet, sizeMuestral))
-    genes = ''.join(genes)
+    genes = genes
     fit = fitness(genes)
     return Chromosome(genes, fit)
 
@@ -37,7 +38,7 @@ def _mutar(parent, genSet, fitness):
     genChildren = list(parent.Gen)
     newGen, pivot = random.sample(genSet, 2)
     genChildren[index] = pivot if newGen == genChildren[index] else newGen
-    genes = ''.join(genChildren)
+    genes = genChildren
     fit = fitness(genes)
     return Chromosome(genes, fit)
 
@@ -60,22 +61,32 @@ def getBestChromosome(fitness, sizeTarget, fitnessTarget, genSet, show):
         bestParent = children
 
 
+def mostrar(candidato, horaInicio):
+    diferencia = (datetime.datetime.now() - horaInicio).total_seconds()
+    print("{}\t{}\t{}".format(
+        ''.join(candidato.getGenes()), candidato.Fitness, diferencia)
+    )
+
+
 class Chromosome(object):
     def __init__(self, genes, fitness):
         self.Gen = genes
         self.Fitness = fitness
 
+    def getGenes(self):
+        return list(map(str, self.Gen))
+
 
 class Comparar:
     @staticmethod
-    def ejecutar(función):
-        print(función)
+    def ejecutar(funcion):
+        print(funcion)
         cronometrajes = []
         stdout = sys.stdout
         for i in range(100):
             sys.stdout = None
             horaInicio = time.time()
-            función()
+            funcion()
             segundos = time.time() - horaInicio
             sys.stdout = stdout
             cronometrajes.append(segundos)
@@ -85,3 +96,6 @@ class Comparar:
                     1 + i, promedio,
                     statistics.stdev(cronometrajes,
                                      promedio) if i > 1 else 0))
+
+
+1
