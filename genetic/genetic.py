@@ -64,7 +64,7 @@ def getBestChromosome(fitness, sizeTarget, fitnessTarget, genSet, show):
 def mostrar(candidato, horaInicio):
     diferencia = (datetime.datetime.now() - horaInicio).total_seconds()
     print("{}\t{}\t{}".format(
-        ''.join(candidato.getGenes()), candidato.Fitness, diferencia)
+        ' '.join(candidato.getGenes()), candidato.Fitness, diferencia)
     )
 
 
