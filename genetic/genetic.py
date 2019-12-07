@@ -49,14 +49,14 @@ def getBestChromosome(fitness, sizeTarget, fitnessTarget, genSet, show):
                                   genSet=genSet,
                                   fitness=fitness)
     show(bestParent)
-    if bestParent.Fitness >= fitnessTarget:
+    if bestParent.Fitness > fitnessTarget:
         return bestParent
     while True:
         children = _mutar(parent=bestParent, genSet=genSet, fitness=fitness)
-        if bestParent.Fitness >= children.Fitness:
+        if bestParent.Fitness > children.Fitness:
             continue
         show(children)
-        if children.Fitness >= fitnessTarget:
+        if children.Fitness > fitnessTarget:
             return children
         bestParent = children
 
@@ -73,8 +73,11 @@ class Chromosome(object):
         self.Gen = genes
         self.Fitness = fitness
 
-    def getGenes(self):
+    def getGenesStr(self):
         return list(map(str, self.Gen))
+
+    def getGenes(self):
+        return self.Gen
 
 
 class Comparar:
@@ -96,6 +99,3 @@ class Comparar:
                     1 + i, promedio,
                     statistics.stdev(cronometrajes,
                                      promedio) if i > 1 else 0))
-
-
-1
