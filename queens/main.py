@@ -104,7 +104,7 @@ class TestQueens(unittest.TestCase):
                                               sizeTarget=2 * size,
                                               fitnessTarget=optimo,
                                               genSet=genSet,
-                                              show=fnDisplay
+                                              fnMostar=fnDisplay
                                               )
         self.assertTrue(not optimo > bestBoard.Fitness)
 

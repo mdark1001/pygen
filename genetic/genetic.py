@@ -43,28 +43,49 @@ def _mutar(parent, genSet, fitness):
     return Chromosome(genes, fit)
 
 
-def getBestChromosome(fitness, sizeTarget, fitnessTarget, genSet, show):
+def _mutacion_personalizada(parent, _mutacion, fitness):
+    genChildren = parent.Gen[:]
+    _mutacion_personalizada(genChildren)
+    fit = fitness(genChildren)
+    return Chromosome(genChildren, fit)
+
+
+def getBestChromosome(fitness, sizeTarget, fitnessTarget, genSet, fnMostar, mutacionPersonalizada=None):
     random.seed()
-    bestParent = _generate_parent(size=sizeTarget,
-                                  genSet=genSet,
-                                  fitness=fitness)
-    show(bestParent)
-    if bestParent.Fitness > fitnessTarget:
-        return bestParent
+    if mutacionPersonalizada is None:
+        def fnMutar(parent):
+            return _mutar(parent, genSet, fitness)
+    else:
+        def fnMutar(parent):
+            return _mutacion_personalizada(parent, mutacionPersonalizada, fitness)
+
+    def fnGenerarPadre():
+        return _generate_parent(sizeTarget, genSet, fitness)
+
+    for mejor in getBetters(fnMutar, fnGenerarPadre):
+        fnMostar(mejor)
+        if not fitnessTarget > mejor.Fitness:
+            return mejor
+
+
+def getBetters(fnMutar, fnGenerarParent):
+    bestParent = fnGenerarParent()
+    yield bestParent
     while True:
-        children = _mutar(parent=bestParent, genSet=genSet, fitness=fitness)
+        children = fnMutar(bestParent)
         if bestParent.Fitness > children.Fitness:
             continue
-        show(children)
-        if children.Fitness > fitnessTarget:
-            return children
+        if children.Fitness > bestParent.Fitness:
+            bestParent = children
+            continue
+        yield children
         bestParent = children
 
 
 def mostrar(candidato, horaInicio):
     diferencia = (datetime.datetime.now() - horaInicio).total_seconds()
     print("{}\t{}\t{}".format(
-        ' '.join(candidato.getGenes()), candidato.Fitness, diferencia)
+        ' '.join(candidato.getGenesStr()), candidato.Fitness, diferencia)
     )
 
 

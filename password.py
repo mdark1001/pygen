@@ -32,7 +32,8 @@ class TestPassword(unittest.TestCase):
         aptitudOptima = len(objetivo)
         mejor = genetic.getBestChromosome(fnObtenerAptitud,
                                           len(objetivo),
-                                          aptitudOptima, self.geneSet,
+                                          aptitudOptima,
+                                          self.geneSet,
                                           fnMostrar)
         self.assertEqual(''.join(mejor.Gen), objetivo)
 

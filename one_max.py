@@ -9,15 +9,12 @@ import unittest
 import genetic
 
 
-def obtener_aptitud(conjetura,objetivo):
+def obtener_aptitud(conjetura, objetivo):
     return conjetura.count(1)
 
 
-
-
-
 class TestOneMax(unittest.TestCase):
-    geneSet = [0,1]
+    geneSet = [0, 1]
 
     def test_buscar_10(self):
         self.findOneMax(10)
@@ -38,10 +35,13 @@ class TestOneMax(unittest.TestCase):
             genetic.mostrar(candidato, horaInicio)
 
         aptitudOptima = objetivo
-        mejor = genetic.getBestChromosome(fnObtenerAptitud,
-                                            objetivo,
-                                            aptitudOptima, self.geneSet,
-                                            fnMostrar)
+        mejor = genetic.getBestChromosome(
+            fitness=fnObtenerAptitud,
+            sizeTarget=objetivo,
+            fitnessTarget=aptitudOptima,
+            genSet=self.geneSet,
+            fnMostar=fnMostrar
+        )
         self.assertEqual(mejor.Fitness, objetivo)
 
 
