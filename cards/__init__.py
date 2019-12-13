@@ -4,4 +4,4 @@
 @project 
 @name __init__.py
 """
-
+from . import main

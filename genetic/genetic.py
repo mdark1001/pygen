@@ -45,12 +45,25 @@ def _mutar(parent, genSet, fitness):
 
 def _mutacion_personalizada(parent, _mutacion, fitness):
     genChildren = parent.Gen[:]
-    _mutacion_personalizada(genChildren)
+    _mutacion(genChildren)
     fit = fitness(genChildren)
     return Chromosome(genChildren, fit)
 
 
-def getBestChromosome(fitness, sizeTarget, fitnessTarget, genSet, fnMostar, mutacionPersonalizada=None):
+def getBestChromosome(fitness,
+                      sizeTarget, fitnessTarget, genSet,
+                      fnMostar, mutacionPersonalizada=None,
+                      cromosomaPersonalizado=None):
+    """
+    :param fitness:
+    :param sizeTarget:
+    :param fitnessTarget:
+    :param genSet:
+    :param fnMostar:
+    :param mutacionPersonalizada:
+    :param cromosomaPersonalizado:
+    :return:
+    """
     random.seed()
     if mutacionPersonalizada is None:
         def fnMutar(parent):
@@ -58,9 +71,13 @@ def getBestChromosome(fitness, sizeTarget, fitnessTarget, genSet, fnMostar, muta
     else:
         def fnMutar(parent):
             return _mutacion_personalizada(parent, mutacionPersonalizada, fitness)
-
-    def fnGenerarPadre():
-        return _generate_parent(sizeTarget, genSet, fitness)
+    if cromosomaPersonalizado is None:
+        def fnGenerarPadre():
+            return _generate_parent(sizeTarget, genSet, fitness)
+    else:
+        def fnGenerarPadre():
+            genes = cromosomaPersonalizado()
+            return Chromosome(genes, fitness(genes))
 
     for mejor in getBetters(fnMutar, fnGenerarPadre):
         fnMostar(mejor)
@@ -99,6 +116,9 @@ class Chromosome(object):
 
     def getGenes(self):
         return self.Gen
+
+    def getFitness(self):
+        return self.Fitness
 
 
 class Comparar:
