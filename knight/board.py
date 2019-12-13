@@ -8,7 +8,6 @@
 
 class Board:
     def __init__(self, positions, width, height):
-        print(positions)
         board = [['.'] * width for _ in range(height)]
         for index in range(len(positions)):
             positionKnigh = positions[index]
