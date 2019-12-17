@@ -4,4 +4,5 @@
 @project 
 @name __init__.py
 """
-from .genetic import _generate_parent, getBestChromosome, _mutar, Chromosome, Comparar, mostrar
+from .genetic import  getBestChromosome
+from .comparar import Comparar
